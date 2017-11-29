@@ -1,0 +1,54 @@
+#!/bin/bash
+DOTFILE=$1
+sudo apt -y update
+
+echo "software essential"
+sudo apt -y install software-properties-common python-software-properties
+
+echo "Installing cmake essential"
+sudo apt -y install build-essential cmake
+
+echo "Installing vim-gnome (xclipboard)"
+sudo apt -y install vim-gnome
+
+echo "Installing Python dev"
+sudo apt -y install python3-dev
+
+echo "Installing ssh"
+sudo apt -y install ssh
+
+echo "Installing tcp tools"
+sudo apt -y install curl
+sudo apt -y install wget
+
+echo "Install tmux"
+sudo apt -y install tmux
+
+echo "Some basic neccessity"
+sudo apt install build-essential libssl-dev libffi-dev python3-dev
+
+echo "Docker"
+sudo apt update -y
+sudo apt -y install apt-transport-https ca-certificates
+
+sudo apt-key adv \
+               --keyserver hkp://ha.pool.sks-keyservers.net:80 \
+               --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+sudo apt-add-repository 'deb https://apt.dockerproject.org/repo ubuntu-xenial main'
+
+sudo apt update -y
+sudo apt install -y docker-engine
+sudo usermod -aG docker $(whoami)
+
+echo "Pip"
+wget https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py
+rm get-pip.py
+
+if [ -n "$DOTFILE" ]; then
+  cd ~
+  git clone $DOTFILE
+  cd dotfiles
+  ./makesyslink.sh
+fi
